@@ -1,0 +1,150 @@
+{[Systems]
+{[gridWorld & TypeLists] data container for game, holds all entities, pass some}
+{[2dGame] contains keyboard input functions, PeerJS stuff, just needs 
+}
+}
+
+{[SPECIFIC UNIT INFO]
+  {[hyperspace]
+    {[green zombie] shambles in large numbers to enemy}
+    {[blue creep] harder nut to crack, moves randomly then toward player if player is within range}
+    {[red :
+    }
+  }
+  {[mercury]
+    {[flareCharger] unit charges, leaving behind a streak of fire, very low health!, eventually come in numbers!}
+    {[rock regurgitator] unit stands in place, shoots peroidic destructible rocks}
+    {[archons] slow moving, medium range fire attack that is pretty much guaranteed to hit, easy to kite and hit though}
+    {[final boss: bull], mix between flareCharger and archon, does some shooting as well}
+  }
+  {[tatooine]
+    {[sniper] long time between firing, move to new location (randomly) after every shot. projectiles are hard to dodge, but must learn how to survive}
+    {[sand worm] moves in and out of the sand, randomly pretty much}
+    {[sand creepers] stay hidden, but can still be shot. if player moves over area, they come out like spider mines}
+    {[final boss: sand fortress] giant structure, immobile, but shoots projectiles, bullet hell style}
+  }
+}
+
+/*
+ * Game ideas:
+ * Space Arena
+ *
+ * general idea: fight increasingly hard waves of enemies, acquire weapons,buffs,and items that add gameplay elements. 
+ *
+ * weapons are switched between with the number buttons,
+ * buffs are activated and deactivated with key presses
+ * items are activated with key presses
+ * 
+ * all are balanced by energy...
+ *
+ * weapons:
+ *
+ * note: bullets cut through rockets but can be reflected
+ *
+ * 1) bolt cannon (sniper like, fast, powerful, slow to reload)
+ * 2) energy swipe (melee weapon, can also reflect projectiles that don't explode on impact
+ * 3) energy lance (slicing attack, cut through enemy units and dodge at the same time)
+ * 4) ion rockets (slow,targeting,powerful,targets are chosen with cursor, but will explode if impacting other projectiles, also will not target unless cursor
+ * 5) laser (no splash, can damage projectiles, pretty instantly hits, like a more interesting machine gun, needs to be held on target to do real damage)
+ * 6) waveform gun (many small projectiles that spread out, bounce off anything), shotgun pretty much
+ *
+ * energy buffs:
+ * energy shield (greatly increases armor, reflection bonus in direction of use)
+ * quantum tunneling (exponentially increases speed)
+ * repair (heal over time)
+ * gyrodrive (increase manouverability)
+ *
+ * items
+ * fission reactor (lose health to gain energy (think stim pack))
+ * pulse bomb (large energy cost, large area of effect, as close to a screen clear as this game should allow)
+ * healing wave (medium energy cost, helps out a brother in need, auto-targets most direct player)
+ *
+ * keyboard to move, mouse to aim and shoot
+ *
+ * enemies:
+ * worlds:
+ * 
+ * space:
+ * mission at start, after first 4 planets, and end
+ * start:
+ * hyperspace:
+ *   starting arsenal:
+ *      laser
+ *      pulse bomb
+ *   turbulence:
+ *      all direct attackers, introduce mechanics and items, quick intro
+ *      reward: energy shield
+ *
+ *   first four items:
+ *      energy lance
+ *      ion rockets
+ *      bolt cannon
+ *      repair
+ *
+ *     closest planet: small, hot. reward: 
+ *       energy lance
+ *       enemies are aggressive but low health, some shoot lava and are harder to kill
+ *       final boss is a charging beast
+ *
+ *     second planet: deserted, reward:
+ *       bolt cannon
+ *       units are snipers mostly, energy lance might be useful for rushing, though some sand creatures that are bigger final boss is a sand fortress
+ *
+ *    third planet: aquatic
+ *      repair + healing wave
+ *      everything is slowed down, enemies have lower healthbut bullet hell insues, mostly submarines. however there are really aggressive sea animals too, that will run back and heal. final boss is a sea creature too, that will hunt and must be hunted
+ *
+ *      fourth planet: really big, forest, large creatures, some of which split into smaller enemies when killed, it's kindof a creature hell.
+ *      ion rockets
+*
+*      metior field: dodging skills are emphasized, as well as knowing when to destroy asteroids and when not to. if asteroids are left at the end of the level, they can die.
+  *      enemies are entirely enemy ships, dogfights!
+*     final boss is galactic rival (moves similarly to player and fires similar weapon)
+  * gyrodrive reward (unit moves with complete friction control (no drifting), at constant speed, less than top speed of ship, but no turning issues.
+      * 
+      * fifth planet: 
+      * robot controlled planet, totally wacky space robot types.
+      * final boss is some crazy terminator
+      * reward: fission reactor
+      *
+      * sixth planet:
+      *   american militarized planet (but clearly alien) units resemble soldiers, tanks, and airplanes final fight with seal team 6
+      *   reward: waveform gun
+      *
+      * seventh planet:
+      *    black hole planet... nothing is as it seems, there are strange, surreal creatures with strange powers, very dark. think those weird guys in minecraft, final boss is difficult to kill because of agility (can only see around self)
+      *    reward: quantum tunnel
+      *      
+      face one boss,
+      space monster, make it up!!
+      *final space level:
+      face rival enemy again,
+      face second boss,
+      pure energy (overloads energy sometimes)
+  face third boss.
+  death star, leathal damage, but can be killed by 1 in a million shot! it's a poingnant knife fight with extreme concentrated skill required to succeed
+  game over!
+  *
+  * enemy aircraft
+  * asteroids
+  * satilites
+* space monsters (the most rugged, cray cray kind)
+  *
+* machinegunner (fires a steady stream of bullets, must reload, at which point it moves randomly to another location before firing again)
+  * Rock (stands in place, moves toward hero's last attack location very slowly)
+  * zombie (moves toward hero at slow pace, safety in numbers)
+  * rhino (move towards hero until close enough, then charges)
+  * missile launcher (moves towards hero and shoot randomly)
+* bouncer (bounces around the arena, moves fast, can hit player)
+  * wallbeam (moves randomly from side to side on wall, shoots beam
+      * cheetah (slightly faster than hero, and always attacks, can be shot down by accurate shooting though)
+      * depleter (fast moving, small, sets energy to 0)
+      * jumper (bounces off walls to eventually arrive at player, moves fast)
+      *
+      *
+      *
+      * game goes in planets, each planet has a different theme, and the arena is slightly different. there are also some space encounters as well, space is different from planets because there is no friction (air resistance) 
+      * 
+      */
+
+

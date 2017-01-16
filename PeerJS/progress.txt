@@ -1,0 +1,13 @@
+My Progress so far  
+Rafael Bravo
+ 	So far I have created a simple interface that uses socket.io and peerjs behind the scenes to broker connections with computers first connecting to the server, and then being able to link with each other easily. I am currently in the process of implementing the lockstep protocol. the intial step of integrating peerjs and socket.io proved somewhat difficult, and the implementation was changed several times for the sake of improvement, but at this point I am happy with it.
+	The implementation has the following functions, that apply between server and peers as well as between peers:
+	Connect(id): connects peers, peer ID must be known by the client starting the connection
+	send(id,data): sends data to a peer or the server. to send to the server use the keyword "server" instead of the peer id.
+	onConnect(id): runs when a connection is established, whether between peers or connecting to the server for the first time.
+	onDisconnect(id): same as onConnect but for disconnections
+	onRecv(id,data): runs whenever the server or a client recieves data from another entity.
+  This consistent api between server code and client code should make the lockstep protocol much easier to implement.
+	My current progress with the lockstep protocol is the implementation of an interval function that recursively calls itself, and corrects for deviations in delay by comparing to the system time. such a function is essential to ensuring that peers exchange and expect packets in synchrony.
+	My plan once the implementation is complete is to first create a very simple proof of concept game, something along the lines of pong. 
+	The second program will be to make something a little more ambitious, I haven't exactly decided what I will implement yet, but depending on time constraints it may be something as simple as another basic multiplayer game, or hopefully something more imaginative.

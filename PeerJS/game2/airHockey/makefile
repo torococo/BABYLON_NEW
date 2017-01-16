@@ -1,0 +1,2 @@
+make:
+	node HockeyServ.js

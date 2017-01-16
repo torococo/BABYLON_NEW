@@ -1,0 +1,11 @@
+{
+  "loadEagerly":[
+  "./ClientP.js",
+  "./LSPeer.js",
+  "./LSServer.js",
+  "./ServerP.js",
+  "./peer.js",
+  "../Helpers/List.js",
+  "../Helpers/Helpers.js"
+  ]
+}

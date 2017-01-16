@@ -1,5 +1,5 @@
 "use strict";
-var LSServer=require("/home/rafael/JS/PeerJS/LSServer.js");
+var LSServer=require("/home/rafael/JS/BABYLON_NEW/PeerJS/LSServer.js");
 
 var Server=function(){
   var ret=new LSServer(8001,8002);
@@ -48,7 +48,7 @@ var Server=function(){
     var fileName=splitPath[splitPath.length-1]
     this.includeFile(path,"/"+fileName,fullType)
   }
-  ret.includeFile("/home/rafael/JS/PeerJS/favicon.ico","/favicon.ico","image/x-icon");
+  ret.includeFile("/home/rafael/JS/BABYLON_NEW/PeerJS/favicon.ico","/favicon.ico","image/x-icon");
   //ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/babylonjs/babylon.core.js","/babylon.js","application/javascript");
   ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/babylonjs/babylon.max.js","/babylon.js","application/javascript");
   ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/hand/hand.js","/hand.js","application/javascript");
