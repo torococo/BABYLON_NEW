@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 window.addEventListener('DOMContentLoaded', function(){
   // get the canvas DOM element
@@ -37,59 +37,48 @@ Main.prototype.MakeBumpTex=function(scene){
   return ret
 }
 
+//Main.prototype.QuadCopter=function(scene){
+//  var ret=BW.QuickBox('copter',scene,new BW.V3(0,1,0))
+//}
+
+Main.prototype.InitScene=function(){
+  //setting up scene
+  this.canvas=document.getElementById('renderCanvas')
+  var initScene=BW.QuickScene(this.canvas,new BW.C3(0.6,0.9,1),new BW.C3(0.1,0.1,0.1))
+  this.scene=initScene.scene
+  this.engine=initScene.engine
+  this.physPlugin=initScene.physPlugin
+
+  //setting up lights and camera
+  this.camera=BW.QuickFlyCamera('cam1',this.scene,this.canvas,new BW.V3(0,5,-10),new BW.V3(0,0,0))
+  this.light=BW.QuickLightDirectional('light1',this.scene,new BW.V3(0,-1,0),new BW.C3(0.5,0.5,0.5),new BW.C3(1,1,1))
+
+  //setting up textures
+  var bumpTex=this.MakeBumpTex(this.scene)
+  var seaMat=BW.QuickColorMat("seaMat",this.scene,new BW.C3(0,0.8,1),new BW.C3(0,1,1),new BW.C3(0,0.1,0.1),null,null,0.5)
+  seaMat.bumpTexture=bumpTex
+  var BallMat=BW.QuickColorMat("BallMat",this.scene,new BW.C3(1,1,1),new BW.C3(1,1,1),new BW.C3(1,1,1))
+  this.balls=[]
+  for(var i=0;i<1000;i++){
+  this.balls.push(BW.QuickBall("ball"+i,this.scene,new BW.V3(Math.random()*100-50,1,Math.random()*100-50),1,5,BallMat.clone(),{mass:1,restitution:0.7,friction:0.1}))
+  }
+    this.sea=BW.QuickPlane('sea',this.scene,null,new BW.V3(Math.PI/1.99,0,0),new BW.V3(400,400,1),seaMat,{mass:0,restitution:0.9},true)
+  initScene.Start()
+
+  //click function
+  var Pick=function(){
+    var picked=this.scene.pick(this.scene.pointerX,this.scene.pointerY)
+  if(picked.hit){
+      console.log(picked)
+      picked.pickedMesh.material.diffuseColor=new BW.C3(1,0,0)
+    }
+  }
+  BW.ClickLockCamera(this.scene,this.canvas,Pick.bind(this))
+}
+
 Main.prototype.Run=function(){
   if(this.count===0){
-//    this.qs=BW.QuickScene('renderCanvas')
-//    this.canvas=document.getElementById('renderCanvas')
-//    this.engine=new BW.Engine(this.canvas,true)
-//    this.scene = new BABYLON.Scene(this.engine);
-//    this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
-//    this.camera.setTarget(BABYLON.Vector3.Zero());
-//    this.camera.attachControl(this.canvas, true);
-//    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
-//    light.intensity = 0.7;
-//    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, this.scene);
-//    sphere.position.y = 1;
-//    var ground = BABYLON.Mesh.Createground("ground1", 6, 6, 2, this.scene);
-//    this.engine.runRenderLoop(function(){this.scene.render()}.bind(this))
-
-    this.qs=BW.QuickScene('renderCanvas')
-    var scene=this.qs.scene
-    scene.enablePhysics(new BW.V3(0,-10,0),new BW.OimoJSPlugin())
-    var seaMat=BW.QuickColorMat("seaMat",scene,new BW.C3(0,0.4,0.4),new BW.C3(0,1,1),new BW.C3(0,0.1,0.1),null,null,0.5)
-    seaMat.bumpTexture=this.MakeBumpTex(scene)
-    var groundMat=BW.QuickColorMat("GroundMat",scene,new BW.C3(0.5,0.5,0),new BW.C3(1,1,1))
-    var BallMat=BW.QuickColorMat("BallMat",scene,new BW.C3(1,0,0))
-
-//    BW.QuickFog(scene,this.qs.camera,10,500)
-
-//    var Sphere=BW.Mesh.CreateSphere('gravTest',16,2,scene)
-//    this.Tube=BW.Mesh.CreateTube("tube",[BW.V(-10,0,0),BW.V(10,0,0)],1,10,null,BABYLON.Mesh.NO_CAP,this.qs.scene)
-//    this.mat1=new BW.QuickMat("mat1",this.qs.scene,BW.C(0,0,0),BW.C(0,1,0),BW.C(0,0,1),BW.C(0,0,0));
-    //this.Tube.material=this.mat1
-    //this.ground=BW.Mesh.CreateGround('ground1',6,6,2,this.qs.scene)
-    var worldScale=new BW.V3(400,1,400)
-    var seaScale=new BW.V3(worldScale.x,worldScale.z,worldScale.y)
-    this.ground=BW.Mesh.CreateGroundFromHeightMap('ground1',"worldHeightMap.jpg",1,1,250,-0.5,10,this.qs.scene,false)
-    this.balls=[]
-    for(var i=0;i<100;i++){
-      this.balls.push(BW.QuickBall("ball"+i,scene,5,1,BallMat,new BW.V3(Math.random()*100-50,10,Math.random()*100-50),{mass:1,restitution:0.9}))
-    }
-    BW.InitMesh(this.ground,groundMat,null,null,worldScale,BW.PhysicsImpostor.HeightmapImpostor,{mass:1,restitution:0.9},scene)
-    this.sea=BW.QuickPlane('sea',scene,null,new BW.V3(Math.PI/2,0,0),seaScale,seaMat,null,true)
-    //this.sea=BW.Mesh.CreatePlane('sea',200,this.qs.scene,true,BW.Mesh.DOUBLESIDE)
-    //BW.InitMesh(this.sea,seaMat,null,new BW.V3(Math.PI/2,0,0),new BW.V3(100,100,10))
-    //var seaMat=BW.QuickMat('mat2',this.qs.scene,BW.C(0,0.2,0.2),BW.C(0.8,0.8,0.8),null,null,0.5,0.2)
-//    var seaMat=BW.QuickMat('mat2',this.qs.scene,BW.C(1,1,1),BW.C(0.8,0.8,0.8),null,null,0.5,1)
-  this.qs.StartRender()
-    this.qs.SetResize()
-    var Pick=function(){
-      var picked=this.qs.scene.pick(this.qs.scene.pointerX,this.qs.scene.pointerY)
-    if(picked.hit){
-        picked.pickedMesh.material.diffuseColor=BW.C(1,1,1)
-      }
-    }
-    BW.ClickLockCamera(this.qs.scene,this.qs.canvas,Pick.bind(this))
+  this.InitScene()
   }
   this.count+=1
 }

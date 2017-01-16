@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 //$ FUNCTION SHORTHANDS
 var BW=BABYLON
 
@@ -20,13 +20,13 @@ BW.C4=BW.Color4
 
 //$ CAMERA FUNCTIONS
 //creates a wsda controlled camera
-BW.QuickFlyCamera=function(name,scene,canvas,pos,target){
-  var ret=new BW.FreeCamera(name,pos,scene)
+BW.QuickFlyCamera=function(name,scene,canvas,vPos,vTarget){
+  var ret=new BW.FreeCamera(name,vPos,scene)
   ret.keysUp.push(87)
   ret.keysDown.push(83)
   ret.keysLeft.push(65)
   ret.keysRight.push(68)
-  ret.setTarget(pos)
+  ret.setTarget(vTarget)
   ret.attachControl(canvas,false)
   return ret
 }
@@ -68,39 +68,88 @@ BW.QuickFog=function(scene,camera,min,max){
   scene.fogEnd=max
   camera.maxZ=max
 }
-
 //<
 
 //$ SCENE FUNCTIONS
 //creates default scene, with no meshes
-BW.BasicScene=function(canvName){
+BW.BasicScene=function(canvas){
   var ret={}
-  ret.canvas=document.getElementById('renderCanvas')
-  ret.engine=new BW.Engine(ret.canvas,true)
-  ret.scene = new BABYLON.Scene(ret.engine);
-  ret.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), ret.scene);
-  ret.camera.setTarget(BABYLON.Vector3.Zero());
+  ret.engine=new BW.Engine(canvas,true)
+  ret.scene = new BW.Scene(ret.engine);
+  ret.camera = new BW.FreeCamera("camera1", new BW.Vector3(0, 5, -10), ret.scene);
+  ret.camera.setTarget(BW.Vector3.Zero());
   ret.camera.attachControl(ret.canvas, true);
-  var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), ret.scene);
-  light.intensity = 0.7;
-  var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, ret.scene);
+  ret.light = new BW.HemisphericLight("light1", new BW.Vector3(0, 1, 0), ret.scene);
+  ret.light.intensity = 0.7;
+  var sphere = BW.Mesh.CreateSphere("sphere1", 16, 2, ret.scene);
   sphere.position.y = 1;
-  var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, ret.scene);
+  ret.ground = BW.Mesh.CreateGround("ground1", 6, 6, 2, ret.scene);
   ret.engine.runRenderLoop(function(){this.scene.render()}.bind(ret))
   return ret
 }
-BW.QuickScene=function(canvName,camera,light){
+BW.QuickSceneDefaults=function(canvas){
   var ret={}
-  ret.canvas=document.getElementById(canvName)
-  ret.engine=new BW.Engine(ret.canvas,true)
+  ret.engine=new BW.Engine(canvas,true)
   ret.scene=new BW.Scene(ret.engine)
   ret.scene.clearColor=new BW.C3(0,0,0)
   ret.scene.ambientColor=new BW.C3(1,1,1)
-  ret.camera=camera?camera:BW.QuickFlyCamera('camera1',ret.scene,ret.canvas,new BW.V3(0,5,0),new BW.V3(0,0,0))
-  ret.light=light?light:new BW.HemisphericLight('light1',new BW.V3(0,1,-100),ret.scene)
-  ret.StartRender=function(){ret.engine.runRenderLoop(function(){ret.scene.render()}.bind(ret))}
-  ret.SetResize=function(){window.addEventListener('resize',ret.engine.resize.bind(ret.engine))}
+  ret.camera=BW.QuickFlyCamera('camera1',ret.scene,ret.canvas,new BW.V3(0,5,0),new BW.V3(0,0,0))
+  ret.light=new BW.HemisphericLight('light1',new BW.V3(0,1,0),ret.scene)
+  ret.Start=function(){ret.engine.runRenderLoop(function(){ret.scene.render()}.bind(ret))}
+  window.addEventListener('resize',ret.engine.resize.bind(ret.engine))
+  ret.physPlugin=new BW.OimoJSPlugin()
+  ret.scene.enablePhysics(new BW.V3(0,-10,0),ret.physPlugin)
   //ret.SetResize=function(){window.addEventListener('resize',function(){ ret.engine.resize()})}
+  return ret
+}
+
+//(canvas,cSky,cAmbient)
+BW.QuickScene=function(canvas,cSky,cAmbient){
+  var ret={}
+  ret.engine=new BW.Engine(canvas,true,null,false)
+  ret.scene=new BW.Scene(ret.engine)
+  if(cSky){ ret.scene.clearColor=cSky }
+  if(cAmbient){ret.scene.ambientColor=cAmbient}
+  ret.Start=function(){ret.engine.runRenderLoop(function(){ret.scene.render()}.bind(ret))}
+  window.addEventListener('resize',ret.engine.resize.bind(ret.engine))
+  ret.physPlugin=new BW.OimoJSPlugin()
+  ret.scene.enablePhysics(new BW.V3(0,-10,0),ret.physPlugin)
+  //ret.SetResize=function(){window.addEventListener('resize',function(){ ret.engine.resize()})}
+  return ret
+}
+//<
+
+//$ LIGHT FUNCTIONS
+//(name,scene,vDiffuse,vSpecular,vPosition)
+BW.QuickLightPoint=function(name,scene,vPosition,cDiffuse,cSpecular){
+  var ret=new BW.PointLight(name,vPosition,scene)
+  if(cDiffuse){ret.diffuse=cDiffuse}
+  if(cSpecular){ret.specular=cSpecular}
+  return ret
+}
+
+//(name,scene,vPosition,cDiffuse,cSpecular,cGroundColor)
+BW.QuickLightHemispheric=function(name,scene,vPosition,cDiffuse,cSpecular,cGroundColor){
+  var ret=new BW.HemisphericLight(name,vPosition,scene)
+  if(cDiffuse){ret.diffuse=cDiffuse}
+  if(cSpecular){ret.specular=cSpecular}
+  if(cGroundColor){ret.groundColor=cGroundColor}
+  return ret
+}
+
+//(name,scene,vPosition,vDirection,nAngle,nExponent,cDiffuse,cSpecular)
+BW.QuickLightSpot=function(name,scene,vPosition,vDirection,nAngle,nExponent,cDiffuse,cSpecular){
+  var ret=BW.SpotLight(name,vPosition,vDirection,nAngle,nExponent)
+  if(cDiffuse){ret.diffuse=cDiffuse}
+  if(cSpecular){ret.specular=cSpecular}
+  return ret
+}
+
+//(name,scene,vDirection,cDiffuse,cSpecular)
+BW.QuickLightDirectional=function(name,scene,vDirection,cDiffuse,cSpecular){
+  var ret=new BW.DirectionalLight(name,vDirection,scene)
+  if(cDiffuse){ret.diffuse=cDiffuse}
+  if(cSpecular){ret.specular=cSpecular}
   return ret
 }
 //<
@@ -123,18 +172,40 @@ BW.InitMesh=function(mesh,material,vPosition,vRotation,vScaling,physicsImposter,
   if(vRotation){ mesh.rotation=vRotation }
   if(vScaling){ mesh.scaling=vScaling }
   if(material){ mesh.material=material }
-  if(physicsImposter){ mesh.setPhysicsState=new BW.PhysicsImpostor(mesh,physicsImposter,imposterArgs,scene)}
+  if(physicsImposter){ mesh.setPhysicsState(physicsImposter,imposterArgs,scene)}
 }
 
-//creates a ball!
-BW.QuickBall=function(name,scene,nSubdivisions,nRadius,material,vPosition,imposterArgs){
-  var ret=BW.Mesh.CreateSphere(name,nSubdivisions,nRadius,scene)
+//(name,scene,nSubdivisions,nRadius,material,vPosition,imposterArgs)
+BW.QuickBall=function(name,scene,vPosition,nRadius,nTessellation,material,imposterArgs){
+  var ret=BW.Mesh.CreateSphere(name,nTessellation,nRadius,scene)
   if(material){ret.material=material}
   if(vPosition){ret.position=vPosition}
-  if(imposterArgs){ret.setPhysicsState=new BW.PhysicsImpostor(ret,BW.PhysicsImpostor.SphereImpostor,imposterArgs,scene)}
+  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.SphereImpostor,imposterArgs,scene)}
+  return ret
 }
 
-//creates a plane!
+//(name,scene,vPosition,vRotation,nRadius,nHeight,nTessellation,material,imposterArgs)
+BW.QuickCylinder=function(name,scene,vPosition,vRotation,nRadius,nHeight,nTessellation,material,imposterArgs){
+  var diam=nRadius*2
+  var ret=BW.Mesh.CreateCylinder(name,nHeight,diam,diam,nTessellation,scene)
+  if(vPosition){ret.position=vPosition}
+  if(vRotation){ret.rotation=vRotation}
+  if(material){ret.material=material}
+  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.CylinderImpostor,imposterArgs,scene)}
+  return ret
+}
+
+//(name,scene,vPosition,vRotation,vScaling,material,imposterArgs)
+BW.QuickBox=function(name,scene,vPosition,vRotation,vScaling,material,imposterArgs){
+  var ret=BW.Mesh.CreateBox(name,1,scene,false)
+  if(vPosition){ret.position=vPosition}
+  if(vRotation){ret.rotation=vRotation}
+  if(vScaling){ret.scaling=vScaling}
+  if(material){ret.material=material}
+  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.BoxImpostor,imposterArgs,scene)}
+}
+
+//(name,scene,vPosition,vRotation,vScaling,material,imposterArgs,bDoubleSided)
 BW.QuickPlane=function(name,scene,vPosition,vRotation,vScaling,material,imposterArgs,bDoubleSided){
   var sided=bDoubleSided?BW.Mesh.DOUBLESIDE:BW.Mesh.DEFAULTSIDE
   var ret=BW.Mesh.CreatePlane(name,1,scene,false,sided)
@@ -142,7 +213,7 @@ BW.QuickPlane=function(name,scene,vPosition,vRotation,vScaling,material,imposter
   if(vRotation){ret.rotation=vRotation}
   if(vScaling){ret.scaling=vScaling}
   if(material){ret.material=material}
-  if(imposterArgs){ret.setPhysicsState=new BW.PhysicsImpostor(ret,BW.PhysicsImpostor.PlaneImpostor,imposterArgs,scene)}
+  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.PlaneImpostor,imposterArgs,scene)}
   return ret
 }
 

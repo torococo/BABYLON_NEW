@@ -1,3 +1,4 @@
+"use strict";
 var ServerP=require("./ServerP.js");
 var Helpers=require("./Helpers/Helpers.js");
 

@@ -8,13 +8,14 @@ var Server=function(){
   ret.inLobby=[];
   ret.setConnect(function(id){
     console.log("new guest, id: "+id);
-    this.players.push(id);
-    this.inLobby.push(id);
-    if(this.inLobby.length===1){
-      console.log("starting new game!");
-      this.inGame.concat(this.inLobby);
-      this.sendGameStart(this.inLobby,Date.now()+5000,40);
-    }
+//    this.players.push(id);
+//    this.inLobby.push(id);
+//    if(this.inLobby.length===1){
+//      console.log("starting new game!");
+//      this.inGame.concat(this.inLobby);
+//      this.sendGameStart(this.inLobby,Date.now()+5000,40);
+      this.sendGameStart([id],Date.now()+5000,40);
+//    }
     //for(var i=0;i<this.players.length;i++){
     //  this.send(this.players[i],{tag:"PlayerNum",num:i});
     //}
@@ -57,7 +58,7 @@ var Server=function(){
   ret.includeFile(__dirname+"/BabyWrap.js","/BabyWrap.js","application/javascript");
   ret.includeFile(__dirname+"/baby.js","/baby.js","application/javascript");
   ret.includeFile(__dirname+"/node_modules/toji-gl-matrix-2aa7274/dist/gl-matrix-min.js","/gl-matrix.js","application/javascript");
-  ret.includeFile(__dirname+"/worldHeightMap.jpg","/worldHeightMap.jpg","image/x-icon");
+//  ret.includeFile(__dirname+"/worldHeightMap.jpg","/worldHeightMap.jpg","image/x-icon");
   //ret.includeFile("/home/rafael/JS/BABYLON_NEW/waterbump.jpg","/waterbump.jpg","image/x-icon");
   ret.FastInclude(__dirname+"/waterbump.jpg","img")
   return ret;
