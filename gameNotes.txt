@@ -1,0 +1,10 @@
+RTS NodeGame{
+  use sprites for units!
+  use intersection to check for interactions
+
+  Canvas2D for UI
+
+  fix server by requiring player to click on the screen to connect
+
+  custom loading screen!
+}
