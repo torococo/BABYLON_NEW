@@ -1,9 +1,9 @@
-var ServerP=require("./PeerJS/ServerP.js");
+var ServerP=require("./ServerP.js");
 var Helpers=require("./Helpers/Helpers.js");
 
 var LSServer=function(SockPort,PeerPort){
   var ret=new ServerP.ServerP(SockPort,PeerPort);
-  ret.includeFile("/home/rafael/JS/PeerJS/favicon.ico","/favicon.ico","image/x-icon");
+  ret.includeFile(__dirname+"/favicon.ico","/favicon.ico","image/x-icon");
   ret.sendGameStart=function(ids,duration){
     for(var idI in ids){
       console.log("Sent ids"+ids);
@@ -11,10 +11,10 @@ var LSServer=function(SockPort,PeerPort){
     }
   };
   ret.tagFuncs=new Helpers.tagFuncs();
-  ret.includeFile("./PeerJS/ClientP.js","/ClientP.js","application/javascript");
-  ret.includeFile("./PeerJS/LSPeer.js","/LSPeer.js","application/javascript");
-  ret.includeFile("./JS/Helpers/Helpers.js","/Helpers.js","application/javascript");
-  ret.includeFile("./home/rafael/JS/Helpers/List.js","/List.js","application/javascript");
+  ret.includeFile(__dirname+"/ClientP.js","/ClientP.js","application/javascript");
+  ret.includeFile(__dirname+"/LSPeer.js","/LSPeer.js","application/javascript");
+  ret.includeFile(__dirname+"/Helpers/Helpers.js","/Helpers.js","application/javascript");
+  ret.includeFile(__dirname+"/Helpers/List.js","/List.js","application/javascript");
 //  ret.includeFile("/home/rafael/JS/Helpers/CircWorld.js","/CircWorld.js","application/javascript");
   ret.setRecv(function(id,data){
     this.tagFuncs.run(data);

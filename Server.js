@@ -1,5 +1,5 @@
 "use strict";
-var LSServer=require("/home/rafael/JS/BABYLON_NEW/PeerJS/LSServer.js");
+var LSServer=require("./PeerJS/LSServer.js");
 
 var Server=function(){
   var ret=new LSServer(8001,8002);
@@ -48,18 +48,18 @@ var Server=function(){
     var fileName=splitPath[splitPath.length-1]
     this.includeFile(path,"/"+fileName,fullType)
   }
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/PeerJS/favicon.ico","/favicon.ico","image/x-icon");
+  ret.includeFile(__dirname+"/PeerJS/favicon.ico","/favicon.ico","image/x-icon");
   //ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/babylonjs/babylon.core.js","/babylon.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/babylonjs/babylon.max.js","/babylon.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/hand/hand.js","/hand.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/babylonjs/Oimo.js","/Oimo.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/index.html","/","text/html");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/BabyWrap.js","/BabyWrap.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/baby.js","/baby.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/node_modules/toji-gl-matrix-2aa7274/dist/gl-matrix-min.js","/gl-matrix.js","application/javascript");
-  ret.includeFile("/home/rafael/JS/BABYLON_NEW/worldHeightMap.jpg","/worldHeightMap.jpg","image/x-icon");
+  ret.includeFile(__dirname+"/node_modules/babylonjs/babylon.max.js","/babylon.js","application/javascript");
+  ret.includeFile(__dirname+"/node_modules/hand/hand.js","/hand.js","application/javascript");
+  ret.includeFile(__dirname+"/node_modules/babylonjs/Oimo.js","/Oimo.js","application/javascript");
+  ret.includeFile(__dirname+"/index.html","/","text/html");
+  ret.includeFile(__dirname+"/BabyWrap.js","/BabyWrap.js","application/javascript");
+  ret.includeFile(__dirname+"/baby.js","/baby.js","application/javascript");
+  ret.includeFile(__dirname+"/node_modules/toji-gl-matrix-2aa7274/dist/gl-matrix-min.js","/gl-matrix.js","application/javascript");
+  ret.includeFile(__dirname+"/worldHeightMap.jpg","/worldHeightMap.jpg","image/x-icon");
   //ret.includeFile("/home/rafael/JS/BABYLON_NEW/waterbump.jpg","/waterbump.jpg","image/x-icon");
-  ret.FastInclude("/home/rafael/JS/BABYLON_NEW/waterbump.jpg","img")
+  ret.FastInclude(__dirname+"/waterbump.jpg","img")
   return ret;
 };
 

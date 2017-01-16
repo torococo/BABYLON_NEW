@@ -2,7 +2,7 @@ var http=require('http');
 var fs=require('fs');
 var url=require('url');
 var ip=require('ip');
-var list=require('../Helpers/List.js');
+var list=require('./Helpers/List.js');
 var PeerServer=require('peer').PeerServer;
 var io=require('socket.io');
 
@@ -32,7 +32,7 @@ var ServerP=function(ServerPort,PeerPort){
 //      this.reusableIDs.push(id);
 //    }
   };
-this.includeFile("/home/rafael/JS/PeerJS/peer.js","/peer.js","application/javascript");
+this.includeFile(__dirname+"/peer.js","/peer.js","application/javascript");
 };
 
 
