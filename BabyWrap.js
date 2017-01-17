@@ -180,7 +180,7 @@ BW.QuickBall=function(name,scene,vPosition,nRadius,nTessellation,material,impost
   var ret=BW.Mesh.CreateSphere(name,nTessellation,nRadius,scene)
   if(material){ret.material=material}
   if(vPosition){ret.position=vPosition}
-  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.SphereImpostor,imposterArgs,scene)}
+  if(imposterArgs){ret.physicsImposter=new BW.PhysicsImpostor(ret,BW.PhysicsImpostor.SphereImpostor,imposterArgs,scene)}
   return ret
 }
 
@@ -191,7 +191,7 @@ BW.QuickCylinder=function(name,scene,vPosition,vRotation,nRadius,nHeight,nTessel
   if(vPosition){ret.position=vPosition}
   if(vRotation){ret.rotation=vRotation}
   if(material){ret.material=material}
-  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.CylinderImpostor,imposterArgs,scene)}
+  if(imposterArgs){ret.physicsImpostor=new BW.PhysicsImpostor(ret,BW.PhysicsImpostor.CylinderImpostor,imposterArgs,scene)}
   return ret
 }
 
@@ -202,7 +202,7 @@ BW.QuickBox=function(name,scene,vPosition,vRotation,vScaling,material,imposterAr
   if(vRotation){ret.rotation=vRotation}
   if(vScaling){ret.scaling=vScaling}
   if(material){ret.material=material}
-  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.BoxImpostor,imposterArgs,scene)}
+  if(imposterArgs){ret.physicsImpostor=new BW.PhysicsImpostor(ret,BW.PhysicsImpostor.BoxImpostor,imposterArgs,scene)}
 }
 
 //(name,scene,vPosition,vRotation,vScaling,material,imposterArgs,bDoubleSided)
@@ -213,7 +213,7 @@ BW.QuickPlane=function(name,scene,vPosition,vRotation,vScaling,material,imposter
   if(vRotation){ret.rotation=vRotation}
   if(vScaling){ret.scaling=vScaling}
   if(material){ret.material=material}
-  if(imposterArgs){ret.setPhysicsState(BW.PhysicsImpostor.PlaneImpostor,imposterArgs,scene)}
+  if(imposterArgs){ret.physicsImpostor=new BW.PhysicsImpostor(ret,BW.PhysicsImpostor.PlaneImpostor,imposterArgs,scene)}
   return ret
 }
 
