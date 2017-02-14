@@ -7,7 +7,7 @@ var LSServer=function(SockPort,PeerPort){
   ret.includeFile(__dirname+"/favicon.ico","/favicon.ico","image/x-icon");
   ret.sendGameStart=function(ids,duration){
     for(var idI in ids){
-      console.log("Sent ids"+ids);
+      console.log("Sent ids"+ids+"Duration"+duration);
       this.send(ids[idI],{tag:"_StartGame",ids:ids,duration:duration,playerNum:idI});
     }
   };

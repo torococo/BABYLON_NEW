@@ -1,6 +1,7 @@
 {
   "browser": true,
   "node": true,
+  "asi": true,
   "esnext": true,
   "bitwise": true,
   "camelcase": true,
@@ -14,9 +15,11 @@
   "undef": false,
   "unused": true,
   "strict": true,
-  "asi": true,
   "globals": {
     "BW": true,
     "LSPeer": true
+    "BABYLON": true,
+    "LSPeer": true,
+    "AgentGridSimple": true
   }
 }

@@ -12,7 +12,7 @@ var HockeyServ=function(){
     if(this.inLobby.length==2){
       console.log("starting new game!");
       this.inGame.concat(this.inLobby);
-      this.sendGameStart(this.inLobby,Date.now()+5000,40);
+      this.sendGameStart(this.inLobby,40);
     }
     //for(var i=0;i<this.players.length;i++){
     //  this.send(this.players[i],{tag:"PlayerNum",num:i});

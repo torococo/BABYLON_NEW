@@ -1,4 +1,99 @@
-//$ MAIN CLASS
+//$DICTIONARY
+/*
+OBJECTS(){
+  WORLD(
+    members{
+      timeStep
+      numIterations (increase or decrease the accuracy of the constraint solvers
+    }
+    functions{
+    }
+    Store everything in linkedlists [rigid bodies, contacts, joints, islands]
+  )
+  SHAPE(
+    simplest primitive
+  )
+  RIGID_BODY(
+    composed of shapes and joints
+    sleeps after a set amount of time of little action
+    .shapes array stores all shapes that make up the body
+    .jointLink stores all joints connected to the rigid body
+    )
+    .addShape
+    .removeShape 
+  CONTACTS(
+    created for all pairs of shapes whose AABB boxes connect
+    contains a manifold that stores collision information
+    gets stored for reuse as an unused contact
+    contactLinks are linkedlist elements that hold contacts
+    also holds impulses to be applied to the object
+  )
+  JOINTS(
+    types{
+      distance
+      spring
+      hinge
+      prismatic
+      slider
+      ball and socket
+      wheel
+    }
+    attributes{
+      spring
+      motor
+      limit
+    }
+  )
+  ISLANDS(
+    groups of objects that are interacting this timestep (can generally be ignored)
+  )
+}
+
+FUNCTIONS(){
+  WORLD_STEP(){
+    iterate over all bodies, awaken sleeping ones that have any deltas to position or velocity
+    
+    use broadphase to detect pairs, these are assigned as contacts
+    for all detected pair contacts[
+      if it already existed, set it as persisting, break
+      add new contact if not found
+    ]
+
+    for all contacts[
+      if new contact use aabb as midphase
+      surviving contacts get manifolds updated
+    ]
+
+    for all rigidbodies[
+      if the body is isolated, compute its update
+      skip bodies that are sleeping, members of an island, or are static
+      add contact constraints and rigid bodies to island
+      add joint constraints and rigid bodies to island
+      shuffle constraints and resolve physics step
+    ]
+
+  }
+  BROAD_PHASE(){
+    how collision pairs are chosen
+    options{
+      BRUTE_FORCE(){always checks all possible pairs}
+      sweep and prune{ }
+    }
+  }
+  UPDATE_MANIFOLD(){
+    use norm to mix resititutions and frictions of objects
+    call detectCollision to solve collisions, collisions stored in manifold.numPoints
+    manifold.numPoints gets updated with reults of detectCollision, 0 means not touching
+    points are compared to previous manifold points, and if delta is less than some critical value, the impulse is set to the previous one
+    otherwise impulse is set to 0, and will be recalculated
+  }
+  DETECT_COLLISIONS(){
+  }
+}
+ */
+//<
+
+//$ CONSTANT DEFINES
 // jshint ignore: start
 /**
  * from OimoPhysics DEV 1.1.0a AS3
@@ -110,7 +205,9 @@ try {
         OIMO.now = perfNow;
     })(window);
 } catch (e) { OIMO.now = function () { return 0; }; }
+//<
 
+//$ WORLD CLASS
 /**
  * The class of physical computing world. 
  * You must be added to the world physical all computing objects
@@ -141,9 +238,6 @@ OIMO.World = function (TimeStep, BroadPhaseType, Iterations, NoStat) {
     // Whether the constraints randomizer is enabled or not.
     this.enableRandomizer = true;
 
-
-
-
     // The rigid body list
     this.rigidBodies = null;
     // number of rigid body
@@ -166,8 +260,6 @@ OIMO.World = function (TimeStep, BroadPhaseType, Iterations, NoStat) {
     // The gravity in the world.
     this.gravity = new OIMO.Vec3(0, -9.80665, 0);
 
-
-
     var numShapeTypes = 5;//4;//3;
     this.detectors = [];
     this.detectors.length = numShapeTypes;
@@ -176,6 +268,7 @@ OIMO.World = function (TimeStep, BroadPhaseType, Iterations, NoStat) {
         this.detectors[i] = [];
         this.detectors[i].length = numShapeTypes;
     }
+
     this.detectors[OIMO.SHAPE_SPHERE][OIMO.SHAPE_SPHERE] = new OIMO.SphereSphereCollisionDetector();
     this.detectors[OIMO.SHAPE_SPHERE][OIMO.SHAPE_BOX] = new OIMO.SphereBoxCollisionDetector(false);
     this.detectors[OIMO.SHAPE_BOX][OIMO.SHAPE_SPHERE] = new OIMO.SphereBoxCollisionDetector(true);
@@ -192,7 +285,6 @@ OIMO.World = function (TimeStep, BroadPhaseType, Iterations, NoStat) {
 
     // TETRA add
     this.detectors[OIMO.SHAPE_TETRA][OIMO.SHAPE_TETRA] = new OIMO.TetraTetraCollisionDetector();
-
 
     this.randX = 65535;
     this.randA = 98765;
@@ -412,7 +504,9 @@ OIMO.World.prototype = {
         return true;
 
     },
+//<
 
+//$ STEP FUNCTION
     /**
     * I will proceed only time step seconds time of World.
     */
@@ -750,6 +844,9 @@ OIMO.World.prototype = {
     }
 
 }
+//<
+
+//$ RIGID BODY CLASS
 /**
 * The class of rigid body. 
 * Rigid body has the shape of a single or multiple collision processing, 
@@ -1472,7 +1569,9 @@ OIMO.Body = function (Obj) {
         // finaly add to physics world
         this.parent.addRigidBody(this.body);*/
 }
+//<
 
+//$ BODY API
 OIMO.Body.prototype = {
     constructor: OIMO.Body,
     // SET
@@ -1523,6 +1622,9 @@ OIMO.Body.prototype = {
         //this.parent.checkContact(this.name, name);
     }
 }
+//<
+
+//$ JOINT API
 /**
 * The main class of link.
 * is for simplify creation process and data access of Joint
@@ -1628,6 +1730,9 @@ OIMO.Link.prototype = {
         this.joint.awake();
     }
 }
+//<
+
+//$ PERFORMANCE CLASSES 
 /**
 * The Dictionary class for testing
 * @author lo-th
@@ -1740,7 +1845,9 @@ OIMO.Performance.prototype = {
         return this.infos;
     }
 };
+//<
 
+//$ MATH CLASSES
 OIMO.Mat44 = function (n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
     this.elements = new OIMO_ARRAY_TYPE(16);
     var te = this.elements;
@@ -3046,6 +3153,9 @@ OIMO.Distance3d = function (p1, p2) {
 * The base class of all type of the constraints.
 * @author saharan
 */
+//<
+
+//$ JOINTS AND CONSTRAINTS
 OIMO.Constraint = function () {
     // The parent world of the constraint.
     this.parent = null;
@@ -3081,6 +3191,7 @@ OIMO.Constraint.prototype = {
         OIMO.Error("Constraint", "Inheritance error.");
     }
 }
+
 /**
  * Joints are used to constrain the motion between two rigid bodies.
  * @author saharan
@@ -6034,6 +6145,9 @@ OIMO.TranslationalConstraint.prototype = {
         this.a2.z -= totalImpulse * this.a2z;
     }
 }
+//<
+
+//$ CONTACT CLASS
 /**
 * A contact is a pair of shapes whose axis-aligned bounding boxes are overlapping.
 * @author saharan
@@ -6086,6 +6200,10 @@ OIMO.Contact.prototype = {
     mixFriction: function (friction1, friction2) {
         return OIMO.sqrt(friction1 * friction2);
     },
+
+//<
+
+//$ FINE CONTACT FUNCTION
     /**
     * Update the contact manifold.
     */
@@ -6162,7 +6280,10 @@ OIMO.Contact.prototype = {
             }
         }
     },
-    /**
+//<
+
+//$ REST OF CONTACT CLASS
+/**
     * Attach the contact to the shapes.
     * @param   shape1
     * @param   shape2
@@ -6956,6 +7077,9 @@ OIMO.MassInfo = function () {
     this.inertia = new OIMO.Mat33();
 
 };
+//<
+
+//$ SHAPE CLASS
 /**
  * A shape is used to detect collisions of rigid bodies.
  * @author saharan
@@ -7035,7 +7159,9 @@ OIMO.Shape.prototype = {
  * Shape configurations can be reused safely.
  * @author saharan
  */
+//<
 
+//$ SHAPE CONFIG
 OIMO.ShapeConfig = function () {
 
     // The position of the shape in parent's coordinate system.
@@ -7054,6 +7180,9 @@ OIMO.ShapeConfig = function () {
     this.collidesWith = 0xffffffff;
 
 };
+//<
+
+//$ SHAPE TYPES AND COLLISION FUNCTIONS
 /**
  * A box shape.
  * @author saharan
@@ -10962,7 +11091,9 @@ function pt(x, y) { return { x: x, y: y }; }
  * @author saharan
  * @author lo-th
  */
+//<
 
+//$ AABB CLASS
 OIMO.AABB = function (minX, maxX, minY, maxY, minZ, maxZ) {
 
     this.elements = new OIMO_ARRAY_TYPE(6);
@@ -11092,7 +11223,9 @@ OIMO.AABB.prototype = {
             OIMO.max(te[3], pt.x), OIMO.max(te[4], pt.y), OIMO.max(te[5], pt.z)
         );
     }
+//<
 
+//$ BROADPHASE IMPLEMENTATIONS
 };
 /**
 * A proxy is used for broad-phase collecting pairs that can be colliding.
@@ -12335,6 +12468,9 @@ OIMO.DBVTProxy.prototype.constructor = OIMO.DBVTProxy;
 OIMO.DBVTProxy.prototype.update = function () {
 
 };
+//<
+
+//$ WORLD ADD FUNCTION
 OIMO.World.prototype.add = function (obj) {
     obj = obj || {};
 
@@ -12511,3 +12647,4 @@ OIMO.World.prototype.add = function (obj) {
         return body;
     }
 }
+//<

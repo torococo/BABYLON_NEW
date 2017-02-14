@@ -28,7 +28,7 @@ var LSPeer=function(ServerPort,RunFunc,stallFunc){
     PC.MovePacks[this.PeerID]={
       id:this.PeerID,
       tick:tick,
-      moves:{}};
+      moves:[]};
     return PC;}.bind(ret);
 
   ret.setConnect(function(id){
@@ -81,7 +81,7 @@ var LSPeer=function(ServerPort,RunFunc,stallFunc){
     this.Players[this.PeerID]={};
     this.goConnections=data.ids;
     this.playerNum=data.playerNum;
-      console.log(data.ids);
+      console.log("IDS:"+data.ids+" STEP:"+data.duration);
     for(var id in data.ids){
       if(id!==this.PeerID){ this.connect(id,10); }
     }
@@ -190,8 +190,9 @@ var LSPeer=function(ServerPort,RunFunc,stallFunc){
     var ret=[];
     for(var Peerid in PC.MovePacks){
       var moves=PC.MovePacks[Peerid].moves;
-      for(var move in moves){
-        ret.push({id:Peerid,t:move,a:moves[move]});
+      for(var iMove in moves){
+        moves[iMove].id=Peerid
+        ret.push(moves[iMove]);
       }
     }
     return ret;
@@ -202,9 +203,9 @@ var LSPeer=function(ServerPort,RunFunc,stallFunc){
     this.SendMoves(false);
   };
 
-  ret.TakeMove=function(key,action){
+  ret.TakeMove=function(action){
     if(this.started){
-      this.MovesPlus2.MovePacks[this.PeerID].moves[key]=action;
+      this.MovesPlus2.MovePacks[this.PeerID].moves.push(action);
     }
   };
 

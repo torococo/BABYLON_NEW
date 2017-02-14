@@ -1,6 +1,13 @@
 {
   "loadEagerly": [
     "./node_modules/babylonjs/babylon.max.js",
-    "./BabyWrap.js"
+    "./BabyWrap.js",
+    "./PeerJS/LSServer.js",
+    "./PeerJS/LSPeer.js",
+    "./PeerJS/ClientP.js",
+    "./PeerJS/ServerP.js",
+    "./node_modules/hand/hand.js",
+    "./node_modules/babylonjs/Oimo.js",
+    "./node_modules/gl-matrix/dist/gl-matrix.js"
   ]
 }
