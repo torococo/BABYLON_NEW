@@ -1,106 +1,143 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'glmatrix' ]
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'linear-algebra' ]
 2 info using npm@4.0.5
 3 info using node@v7.4.0
 4 silly loadCurrentTree Starting
 5 silly install loadCurrentTree
 6 silly install readLocalPackageData
-7 silly fetchPackageMetaData glmatrix
-8 silly fetchNamedPackageData glmatrix
-9 silly mapToRegistry name glmatrix
+7 silly fetchPackageMetaData linear-algebra
+8 silly fetchNamedPackageData linear-algebra
+9 silly mapToRegistry name linear-algebra
 10 silly mapToRegistry using default registry
 11 silly mapToRegistry registry https://registry.npmjs.org/
 12 silly mapToRegistry data Result {
-12 silly mapToRegistry   raw: 'glmatrix',
+12 silly mapToRegistry   raw: 'linear-algebra',
 12 silly mapToRegistry   scope: null,
-12 silly mapToRegistry   escapedName: 'glmatrix',
-12 silly mapToRegistry   name: 'glmatrix',
+12 silly mapToRegistry   escapedName: 'linear-algebra',
+12 silly mapToRegistry   name: 'linear-algebra',
 12 silly mapToRegistry   rawSpec: '',
 12 silly mapToRegistry   spec: 'latest',
 12 silly mapToRegistry   type: 'tag' }
-13 silly mapToRegistry uri https://registry.npmjs.org/glmatrix
-14 verbose request uri https://registry.npmjs.org/glmatrix
+13 silly mapToRegistry uri https://registry.npmjs.org/linear-algebra
+14 verbose request uri https://registry.npmjs.org/linear-algebra
 15 verbose request no auth needed
-16 info attempt registry request try #1 at 11:23:23 PM
-17 verbose request id 20bdf4dd9d57bc2d
-18 http request GET https://registry.npmjs.org/glmatrix
-19 http 404 https://registry.npmjs.org/glmatrix
-20 verbose headers { 'content-type': 'application/json',
-20 verbose headers   'cache-control': 'max-age=0',
-20 verbose headers   'content-length': '2',
-20 verbose headers   'accept-ranges': 'bytes',
-20 verbose headers   date: 'Sun, 15 Jan 2017 04:23:24 GMT',
-20 verbose headers   via: '1.1 varnish',
-20 verbose headers   age: '0',
-20 verbose headers   connection: 'keep-alive',
-20 verbose headers   'x-served-by': 'cache-atl6220-ATL',
-20 verbose headers   'x-cache': 'MISS',
-20 verbose headers   'x-cache-hits': '0',
-20 verbose headers   'x-timer': 'S1484454204.206025,VS0,VE97',
-20 verbose headers   vary: 'Accept-Encoding' }
-21 silly get cb [ 404,
-21 silly get   { 'content-type': 'application/json',
-21 silly get     'cache-control': 'max-age=0',
-21 silly get     'content-length': '2',
-21 silly get     'accept-ranges': 'bytes',
-21 silly get     date: 'Sun, 15 Jan 2017 04:23:24 GMT',
-21 silly get     via: '1.1 varnish',
-21 silly get     age: '0',
-21 silly get     connection: 'keep-alive',
-21 silly get     'x-served-by': 'cache-atl6220-ATL',
-21 silly get     'x-cache': 'MISS',
-21 silly get     'x-cache-hits': '0',
-21 silly get     'x-timer': 'S1484454204.206025,VS0,VE97',
-21 silly get     vary: 'Accept-Encoding' } ]
-22 silly fetchPackageMetaData Error: Registry returned 404 for GET on https://registry.npmjs.org/glmatrix
-22 silly fetchPackageMetaData     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
-22 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:280:14)
-22 silly fetchPackageMetaData     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
-22 silly fetchPackageMetaData     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:186:22)
-22 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
-22 silly fetchPackageMetaData     at Request.emit (events.js:191:7)
-22 silly fetchPackageMetaData     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1081:10)
-22 silly fetchPackageMetaData     at emitOne (events.js:96:13)
-22 silly fetchPackageMetaData     at Request.emit (events.js:188:7)
-22 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1001:12)
-22 silly fetchPackageMetaData  error for glmatrix { Error: Registry returned 404 for GET on https://registry.npmjs.org/glmatrix
-22 silly fetchPackageMetaData     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
-22 silly fetchPackageMetaData     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:280:14)
-22 silly fetchPackageMetaData     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
-22 silly fetchPackageMetaData     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:186:22)
-22 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
-22 silly fetchPackageMetaData     at Request.emit (events.js:191:7)
-22 silly fetchPackageMetaData     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1081:10)
-22 silly fetchPackageMetaData     at emitOne (events.js:96:13)
-22 silly fetchPackageMetaData     at Request.emit (events.js:188:7)
-22 silly fetchPackageMetaData     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1001:12) pkgid: 'glmatrix', statusCode: 404, code: 'E404' }
-23 silly rollbackFailedOptional Starting
-24 silly rollbackFailedOptional Finishing
-25 silly runTopLevelLifecycles Finishing
-26 silly install printInstalled
-27 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/glmatrix
-27 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
-27 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:280:14)
-27 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
-27 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:186:22)
-27 verbose stack     at emitTwo (events.js:106:13)
-27 verbose stack     at Request.emit (events.js:191:7)
-27 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1081:10)
-27 verbose stack     at emitOne (events.js:96:13)
-27 verbose stack     at Request.emit (events.js:188:7)
-27 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1001:12)
-28 verbose statusCode 404
-29 verbose pkgid glmatrix
-30 verbose cwd /home/rafael/JS/BABYLON_NEW
-31 error Linux 4.4.0-24-generic
-32 error argv "/usr/bin/nodejs" "/usr/bin/npm" "install" "glmatrix"
-33 error node v7.4.0
-34 error npm  v4.0.5
-35 error code E404
-36 error 404 Registry returned 404 for GET on https://registry.npmjs.org/glmatrix
-37 error 404
-38 error 404 'glmatrix' is not in the npm registry.
-39 error 404 You should bug the author to publish it (or use the name yourself!)
-40 error 404 Note that you can also install from a
-41 error 404 tarball, folder, http url, or git url.
-42 verbose exit [ 1, true ]
+16 info attempt registry request try #1 at 7:47:19 PM
+17 verbose request id 706e1c0f74701f3e
+18 verbose etag W/"56a1bd11-6489"
+19 verbose lastModified Fri, 22 Jan 2016 05:24:33 GMT
+20 http request GET https://registry.npmjs.org/linear-algebra
+21 http 304 https://registry.npmjs.org/linear-algebra
+22 verbose headers { date: 'Sun, 22 Jan 2017 00:47:20 GMT',
+22 verbose headers   via: '1.1 varnish',
+22 verbose headers   'cache-control': 'max-age=300',
+22 verbose headers   etag: 'W/"56a1bd11-6489"',
+22 verbose headers   age: '90',
+22 verbose headers   connection: 'keep-alive',
+22 verbose headers   'x-served-by': 'cache-atl6238-ATL',
+22 verbose headers   'x-cache': 'HIT',
+22 verbose headers   'x-cache-hits': '1',
+22 verbose headers   'x-timer': 'S1485046040.076131,VS0,VE0',
+22 verbose headers   vary: 'Accept-Encoding' }
+23 silly get cb [ 304,
+23 silly get   { date: 'Sun, 22 Jan 2017 00:47:20 GMT',
+23 silly get     via: '1.1 varnish',
+23 silly get     'cache-control': 'max-age=300',
+23 silly get     etag: 'W/"56a1bd11-6489"',
+23 silly get     age: '90',
+23 silly get     connection: 'keep-alive',
+23 silly get     'x-served-by': 'cache-atl6238-ATL',
+23 silly get     'x-cache': 'HIT',
+23 silly get     'x-cache-hits': '1',
+23 silly get     'x-timer': 'S1485046040.076131,VS0,VE0',
+23 silly get     vary: 'Accept-Encoding' } ]
+24 verbose etag https://registry.npmjs.org/linear-algebra from cache
+25 verbose get saving linear-algebra to /home/rafael/.npm/registry.npmjs.org/linear-algebra/.cache.json
+26 verbose correctMkdir /home/rafael/.npm correctMkdir not in flight; initializing
+27 silly install normalizeTree
+28 silly loadCurrentTree Finishing
+29 silly loadIdealTree Starting
+30 silly install loadIdealTree
+31 silly cloneCurrentTree Starting
+32 silly install cloneCurrentTreeToIdealTree
+33 silly cloneCurrentTree Finishing
+34 silly loadShrinkwrap Starting
+35 silly install loadShrinkwrap
+36 silly loadShrinkwrap Finishing
+37 silly loadAllDepsIntoIdealTree Starting
+38 silly install loadAllDepsIntoIdealTree
+39 silly resolveWithNewModule linear-algebra@3.1.3 checking installable status
+40 silly cache add args [ 'linear-algebra', null ]
+41 verbose cache add spec linear-algebra
+42 silly cache add parsed spec Result {
+42 silly cache add   raw: 'linear-algebra',
+42 silly cache add   scope: null,
+42 silly cache add   escapedName: 'linear-algebra',
+42 silly cache add   name: 'linear-algebra',
+42 silly cache add   rawSpec: '',
+42 silly cache add   spec: 'latest',
+42 silly cache add   type: 'tag' }
+43 silly addNamed linear-algebra@latest
+44 verbose addNamed "latest" is being treated as a dist-tag for linear-algebra
+45 info addNameTag [ 'linear-algebra', 'latest' ]
+46 silly mapToRegistry name linear-algebra
+47 silly mapToRegistry using default registry
+48 silly mapToRegistry registry https://registry.npmjs.org/
+49 silly mapToRegistry data Result {
+49 silly mapToRegistry   raw: 'linear-algebra',
+49 silly mapToRegistry   scope: null,
+49 silly mapToRegistry   escapedName: 'linear-algebra',
+49 silly mapToRegistry   name: 'linear-algebra',
+49 silly mapToRegistry   rawSpec: '',
+49 silly mapToRegistry   spec: 'latest',
+49 silly mapToRegistry   type: 'tag' }
+50 silly mapToRegistry uri https://registry.npmjs.org/linear-algebra
+51 verbose addNameTag registry:https://registry.npmjs.org/linear-algebra not in flight; fetching
+52 verbose get https://registry.npmjs.org/linear-algebra not expired, no request
+53 silly addNameTag next cb for linear-algebra with tag latest
+54 silly addNamed linear-algebra@3.1.3
+55 verbose addNamed "3.1.3" is a plain semver version for linear-algebra
+56 silly cache afterAdd linear-algebra@3.1.3
+57 verbose afterAdd /home/rafael/.npm/linear-algebra/3.1.3/package/package.json not in flight; writing
+58 verbose correctMkdir /home/rafael/.npm correctMkdir not in flight; initializing
+59 verbose afterAdd /home/rafael/.npm/linear-algebra/3.1.3/package/package.json written
+60 silly loadAllDepsIntoIdealTree Finishing
+61 silly loadIdealTree Finishing
+62 silly currentTree BABYLON_NEW
+62 silly currentTree ├── babylonjs@2.5.0
+62 silly currentTree ├── gl-matrix@2.3.2
+62 silly currentTree ├── gl-matrix@2.3.2
+62 silly currentTree ├── hand@0.1.2
+62 silly currentTree └── Oimo.js
+63 silly idealTree BABYLON_NEW
+63 silly idealTree ├── babylonjs@2.5.0
+63 silly idealTree ├── gl-matrix@2.3.2
+63 silly idealTree ├── gl-matrix@2.3.2
+63 silly idealTree ├── hand@0.1.2
+63 silly idealTree ├── linear-algebra@3.1.3
+63 silly idealTree └── Oimo.js
+64 silly generateActionsToTake Starting
+65 silly install generateActionsToTake
+66 silly rollbackFailedOptional Starting
+67 silly rollbackFailedOptional Finishing
+68 silly runTopLevelLifecycles Finishing
+69 silly install printInstalled
+70 warn enoent ENOENT: no such file or directory, open '/home/rafael/JS/BABYLON_NEW/package.json'
+71 verbose enoent ENOENT: no such file or directory, open '/home/rafael/JS/BABYLON_NEW/package.json'
+71 verbose enoent This is most likely not a problem with npm itself
+71 verbose enoent and is related to npm not being able to find a file.
+72 verbose stack Error: /home/rafael/JS/BABYLON_NEW/node_modules/Oimo.js: Appears to be a git repo or submodule.
+72 verbose stack     at /usr/lib/node_modules/npm/node_modules/npm-install-checks/index.js:137:15
+72 verbose stack     at /usr/lib/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:18
+72 verbose stack     at FSReqWrap.oncomplete (fs.js:112:15)
+73 verbose cwd /home/rafael/JS/BABYLON_NEW
+74 error Linux 4.4.0-24-generic
+75 error argv "/usr/bin/nodejs" "/usr/bin/npm" "install" "linear-algebra"
+76 error node v7.4.0
+77 error npm  v4.0.5
+78 error path /home/rafael/JS/BABYLON_NEW/node_modules/Oimo.js
+79 error code EISGIT
+80 error git /home/rafael/JS/BABYLON_NEW/node_modules/Oimo.js: Appears to be a git repo or submodule.
+81 error git /home/rafael/JS/BABYLON_NEW/node_modules/Oimo.js
+82 error git Refusing to remove it. Update manually,
+82 error git or move it out of the way first.
+83 verbose exit [ 1, true ]

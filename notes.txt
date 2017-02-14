@@ -1,0 +1,11 @@
+always write code in planning and detailing phases
+
+create the interface before the details
+
+the header before the c
+
+should make drone wars as soon as possible
+
+make brain node, that takes in the current timestep info and the previous timestep info, learns via genetic algorithm, learning rates are altered for each weight by the derivative of the learning rate
+
+BrainNode{}

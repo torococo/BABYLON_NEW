@@ -44,13 +44,13 @@ Main.prototype.MakeBumpTex=function(scene){
 Main.prototype.InitScene=function(){
   //setting up scene
   this.canvas=document.getElementById('renderCanvas')
-  var initScene=BW.QuickScene(this.canvas,new BW.C3(0.6,0.9,1),new BW.C3(0.1,0.1,0.1))
+  var initScene=BW.QuickScene(this.canvas,new BW.C3(0.6,0.9,1),new BW.C3(0.1,0.1,0.1),true)
   this.scene=initScene.scene
   this.engine=initScene.engine
   this.physPlugin=initScene.physPlugin
 
   //setting up lights and camera
-  this.camera=BW.QuickFlyCamera('cam1',this.scene,this.canvas,new BW.V3(0,5,-10),new BW.V3(0,0,0))
+  this.camera=BW.QuickFlyCamera('cam1',this.scene,this.canvas,new BW.V3(0,5,10),new BW.V3(0,10,-10))
   this.light=BW.QuickLightDirectional('light1',this.scene,new BW.V3(0,-1,0),new BW.C3(0.5,0.5,0.5),new BW.C3(1,1,1))
 
   //setting up textures
@@ -59,10 +59,12 @@ Main.prototype.InitScene=function(){
   seaMat.bumpTexture=bumpTex
   var BallMat=BW.QuickColorMat("BallMat",this.scene,new BW.C3(1,1,1),new BW.C3(1,1,1),new BW.C3(1,1,1))
   this.balls=[]
-  for(var i=0;i<1;i++){
-  this.balls.push(BW.QuickBall("ball"+i,this.scene,new BW.V3(Math.random()*100-50,1,Math.random()*100-50),1,5,BallMat.clone(),{mass:1,restitution:0.7,friction:0.1,nativeOptions:{belongsTo:1,collidesWith:1}}))
-  }
-  console.log(this.balls[0].physicsImposter)
+  //for(var i=0;i<1;i++){
+  //this.balls.push(BW.QuickBall("ball"+i,this.scene,new BW.V3(Math.random()*100-50,1,Math.random()*100-50),1,5,BallMat.clone(),{mass:1,restitution:0.7,friction:0.1,nativeOptions:{belongsTo:1,collidesWith:1}}))
+  var bigBox=BW.QuickBox("ball"+1,this.scene,new BW.V3(0,10,-10),new BW.V3(0.1,0,0),null,BallMat.clone(),{mass:1,restitution:0.7,friction:0.1,nativeOptions:{belongsTo:1,collidesWith:1}})
+  var smallBox=BW.QuickBox("ball"+2,this.scene,new BW.V3(0,10,-10),new BW.V3(0.1,0,0),new BW.V3(0.5,0.5,0.5),BallMat.clone(),{mass:1,restitution:0.7,friction:0.1,nativeOptions:{belongsTo:1,collidesWith:1}})
+  //}
+  //console.log(this.balls[0].physicsImpostor)
     this.sea=BW.QuickPlane('sea',this.scene,null,new BW.V3(Math.PI/1.99,0,0),new BW.V3(400,400,1),seaMat,{mass:0,restitution:0.9,nativeOptions:{belongsTo:2,collidesWith:2}},true)
   initScene.Start()
 

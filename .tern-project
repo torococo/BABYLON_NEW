@@ -1,0 +1,13 @@
+{
+  "loadEagerly":[
+  "/home/rafael/JS/PeerJS/LSServer.js",
+  "/home/rafael/JS/PeerJS/LSPeer.js",
+  "/home/rafael/JS/PeerJS/ClientP.js",
+  "/home/rafael/JS/PeerJS/ServerP.js",
+  "/home/rafael/JS/BABYLON_NEW/BabyWrap.js",
+  "./node_modules/babylonjs/babylon.core.js",
+  "./node_modules/hand/hand.js",
+  "./node_modules/babylonjs/Oimo.js",
+  "./node_modules/gl-matrix/dist/gl-matrix.js"
+  ]
+}
