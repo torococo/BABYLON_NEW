@@ -1,0 +1,6 @@
+{
+  "loadEagerly": [
+    "./node_modules/babylonjs/babylon.max.js",
+    "./BabyWrap.js"
+  ]
+}
