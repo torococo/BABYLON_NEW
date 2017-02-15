@@ -437,7 +437,7 @@ BW.InputManager=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
 }
 
 //gets the factor that all arguments should be divided by to normalize
-BW.MathNormFactor=function(){
+BW.NormF=function(){
   var sum=0
   for(let i in arguments){
     sum+=arguments[i]*arguments[i]

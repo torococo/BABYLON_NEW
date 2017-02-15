@@ -56,7 +56,7 @@ Agent.prototype.Step=function(){
 //$ SPECIALIZED AGENTS
 //agents have hp,dp for enemy team and enemy spells
 //(rad,x,y,vx,vy,hp,iTeam,bUnit,spellDamage,unitDamage,lifeSpan,HitEdge)
-var GameAgent=function(rad,vx,vy,hp,iTeam,bUnit,spellDamage,unitDamage,lifeSpan,HitEdge){
+var Unit=function(rad,vx,vy,hp,iTeam,bUnit,spellDamage,unitDamage,lifeSpan,HitEdge){
   this.bUnit=bUnit
   this.hp=hp
   this.iTeam=iTeam
@@ -68,7 +68,7 @@ var GameAgent=function(rad,vx,vy,hp,iTeam,bUnit,spellDamage,unitDamage,lifeSpan,
   this.HitEdge=HitEdge
 }
 //gets all touching enemies, a good first step
-GameAgent.prototype.GetTouchingEnemies=function(bSpells,bUnits){
+Unit.prototype.GetTouchingEnemies=function(bSpells,bUnits){
   var touchingSpells=[]
   var touchingUnits=[]
   if(bSpells){
@@ -89,18 +89,18 @@ GameAgent.prototype.GetTouchingEnemies=function(bSpells,bUnits){
 }
 
 //referse direction
-GameAgent.prototype.DefaultUnitEdge=function(x,y){
+Unit.prototype.DefaultUnitEdge=function(x,y){
   this.vx=-this.vx
   this.vy=-this.vy
 }
 
 //projectile is destroyed
-GameAgent.prototype.DefaultProjectileEdge=function(x,y){
+Unit.prototype.DefaultProjectileEdge=function(x,y){
   this.Die()
 }
 
 //deal damage to all touching enemies
-GameAgent.prototype.DefaultAttack=function(touchingEnemies){
+Unit.prototype.DefaultAttack=function(touchingEnemies){
   for(let i in touchingEnemies.touchingSpells){
     touchingEnemies.touchingSpells[i].hp-=this.spellDamage
   }
@@ -109,7 +109,7 @@ GameAgent.prototype.DefaultAttack=function(touchingEnemies){
   }
 }
 
-GameAgent.prototype.MoveDie=function(){
+Unit.prototype.MoveDie=function(){
   if(this.hp<=0){
     this.Die()
     return
@@ -117,15 +117,19 @@ GameAgent.prototype.MoveDie=function(){
   this.Move(this.x+this.vx,this.y+this.vy)
 }
 
-GameAgent.prototype.Add=function(world,x,y){
+Unit.prototype.Add=function(world,x,y){
   this.world=world
   if(this.bUnit){ world.teams[this.iTeam].units.Add(this,x,y) }
   else{this.world.teams[this.iTeam].spells.Add(this,x,y)}
 }
-GameAgent.prototype=new Agent(0,0,0,null,null)
+Unit.prototype=new Agent(0,0,0,null,null)
+Unit.prototype.Shoot=function(obj,x,y,v){
+  if(v!==undefined){}
+  var mul=BW.NormF(x,y)*v
+}
 
-GameAgent.prototype.CheckCollisions=function(){
-  //GameAgents deal damage during collisions, then die if they are out of hp
+Unit.prototype.CheckCollisions=function(){
+  //Units deal damage during collisions, then die if they are out of hp
   
 }
 //<
@@ -136,7 +140,7 @@ var Hero=function(hp,mp,team){
   this.team=team
 }
 
-Hero.prototype=new GameAgent(0.2,0,0,undefined,undefined,true,10,10,-1,GameAgent.DefaultUnitEdge)
+Hero.prototype=new Unit(0.2,0,0,undefined,undefined,true,10,10,-1,Unit.DefaultUnitEdge)
 
 Hero.prototype.StepCombat=function(){
   var moves=this.world.moves
@@ -146,7 +150,7 @@ Hero.prototype.StepCombat=function(){
       if(move.tag==='clicked'){
         var shootX=move.x-this.x
         var shootY=move.y-this.y
-        var normF=BW.MathNormFactor(shootX,shootY)
+        var normF=BW.NormF(shootX,shootY)
         shootX*=normF
         shootY*=normF
         this.Shoot(shootX,shootY,move.buttons)
@@ -156,7 +160,7 @@ Hero.prototype.StepCombat=function(){
 }
 
 Hero.prototype.Shoot=function(x,y){
-  var Fireball=new GameAgent()
+  var Fireball=new Unit()
 }
 
 var FireBall=function(x,y,vx,vy){}
