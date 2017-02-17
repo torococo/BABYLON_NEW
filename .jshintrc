@@ -12,12 +12,12 @@
   "latedef": true,
   "newcap": false,
   "noarg": true,
-  "undef": false,
-  "unused": true,
+  "undef": true,
+  "unused": false,
   "strict": true,
   "globals": {
     "BW": true,
-    "LSPeer": true
+    "LSPeer": true,
     "BABYLON": true,
     "LSPeer": true,
     "AgentGridSimple": true

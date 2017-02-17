@@ -74,7 +74,7 @@ BW.QuickFog=function(scene,camera,nMin,nMax){
 
 //$ SCENE FUNCTIONS
 //creates default scene, with no meshes
-BW.BasicScene=function(canvas,bPhysics){
+BW.BasicScene=function(canvas){
   var ret={}
   ret.engine=new BW.Engine(canvas,true)
   ret.scene = new BW.Scene(ret.engine);
@@ -408,7 +408,6 @@ BW.InputManager=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
   ret.keys.length=128
   ret.mouseButtons.length=3
   document.addEventListener('mousedown',function(event){
-    BW.Pr(event.button)
     this.mouseButtons[event.button]=true
     this.mouseX=event.clientX
     this.mouseY=event.clientY
@@ -434,6 +433,33 @@ BW.InputManager=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
     if(this.KeyUp){this.KeyUp(event)}
   }.bind(ret),false) 
   return ret
+}
+
+BW.InputManager2D=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
+  var ret=BW.InputManager(function(event){
+    if(event.keyCode===115){ this.prefY=-1 }
+    if(event.keyCode===119){ this.prefY=1 }
+    if(event.keyCode===97){ this.prefX=-1 }
+    if(event.keyCode===100){ this.prefX=1 }
+    if(this.keyDownSub){this.keyDownSub(event)}
+  },KeyUp, MouseDown, MouseUp ,MouseMove)
+  ret.keyDownSub=KeyDown
+  ret.prefX=0
+  ret.prefY=0
+  ret.GetMoveDir=function(){
+  var xSend=0
+  var ySend=0
+  if(this.keys[115]&&(this.prefY===1||!this.keys[119])){ ySend=-1 }
+  else if(this.keys[119]&&(this.prefY===-1||!this.keys[115])){ ySend=1 }
+  if(this.keys[97]&&(this.prefX===1||!this.keys[100])){ xSend=-1 }
+  else if(this.keys[100]&&(this.prefX===-1||!this.keys[97])){ xSend=1 }
+  if(xSend!==0&&ySend!==0){
+    xSend=xSend*0.7071
+    ySend=ySend*0.7071
+  }
+  return {x:xSend,y:ySend}
+}
+return ret
 }
 
 //gets the factor that all arguments should be divided by to normalize
