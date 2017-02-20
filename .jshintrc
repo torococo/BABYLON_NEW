@@ -20,6 +20,7 @@
     "LSPeer": true,
     "BABYLON": true,
     "LSPeer": true,
-    "AgentGridSimple": true
+    "AgentGridSimple": true,
+    "World2D": true
   }
 }

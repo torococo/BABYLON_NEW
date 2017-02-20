@@ -249,7 +249,6 @@ BW.GenSprite=function(sName,scene,vPosition,vRotation,vScaling,spriteType,bPicka
 
 //<
 
-
 //NOT BABYLON RELATED
 
 //$ AGENT GRID SIMPLE
@@ -395,8 +394,10 @@ BW.Shuffle=function(arr){
 //use ispickable to setup
 BW.InputManager=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
   var ret={
-    keys:[],
-    mouseButtons:[],
+    keysCurr:[],
+    keysTick:[],
+    mouseCurr:[],
+    mouseTick:[],
     mouseX:undefined,
     mouseY:undefined,
     KeyUp:KeyUp,
@@ -405,16 +406,17 @@ BW.InputManager=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
     MouseUp:MouseUp,
     MouseMove:MouseMove
   }
-  ret.keys.length=128
-  ret.mouseButtons.length=3
+  ret.keysCurr.length=128
+  ret.mouseCurr.length=3
   document.addEventListener('mousedown',function(event){
-    this.mouseButtons[event.button]=true
+    this.mouseCurr[event.button]=true
+    this.mouseTick[event.button]=true
     this.mouseX=event.clientX
     this.mouseY=event.clientY
     if(this.MouseDown){this.MouseDown(event)}
   }.bind(ret),false) 
   document.addEventListener('mouseup',function(event){
-    this.mouseButtons[event.button]=undefined
+    this.mouseCurr[event.button]=undefined
     this.mouseX=event.clientX
     this.mouseY=event.clientY
     if(this.MouseUp){this.MouseUp(event)}
@@ -425,22 +427,32 @@ BW.InputManager=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
     if(this.MouseMove){this.MouseMove(event)}
   }.bind(ret),false) 
   document.addEventListener('keydown',function(event){
-    this.keys[event.keyCode]=true
-    if(this.KeyDown){this.KeyDown(event)}
+    this.keysTick[event.keyCode]=true
+    if(!this.keysCurr[event.keyCode]){
+      this.keysCurr[event.keyCode]=true
+      if(this.KeyDown){this.KeyDown(event)}
+    }
   }.bind(ret),false) 
   document.addEventListener('keyup',function(event){
-    this.keys[event.keyCode]=undefined
+    this.keysCurr[event.keyCode]=undefined
     if(this.KeyUp){this.KeyUp(event)}
   }.bind(ret),false) 
+  ret.resetTick=function(){
+    this.keysTick=[]
+    this.mouseTick=[]
+    this.keysTick.length=128
+    this.mouseTick.length=3
+  }
+  ret.resetTick()
   return ret
 }
 
 BW.InputManager2D=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
   var ret=BW.InputManager(function(event){
-    if(event.keyCode===115){ this.prefY=-1 }
-    if(event.keyCode===119){ this.prefY=1 }
-    if(event.keyCode===97){ this.prefX=-1 }
-    if(event.keyCode===100){ this.prefX=1 }
+    if(event.keyCode===83){ this.prefY=-1 }
+    if(event.keyCode===87){ this.prefY=1 }
+    if(event.keyCode===65){ this.prefX=-1 }
+    if(event.keyCode===68){ this.prefX=1 }
     if(this.keyDownSub){this.keyDownSub(event)}
   },KeyUp, MouseDown, MouseUp ,MouseMove)
   ret.keyDownSub=KeyDown
@@ -449,10 +461,10 @@ BW.InputManager2D=function(KeyDown,KeyUp,MouseDown,MouseUp,MouseMove){
   ret.GetMoveDir=function(){
   var xSend=0
   var ySend=0
-  if(this.keys[115]&&(this.prefY===1||!this.keys[119])){ ySend=-1 }
-  else if(this.keys[119]&&(this.prefY===-1||!this.keys[115])){ ySend=1 }
-  if(this.keys[97]&&(this.prefX===1||!this.keys[100])){ xSend=-1 }
-  else if(this.keys[100]&&(this.prefX===-1||!this.keys[97])){ xSend=1 }
+  if(this.keysCurr[83]&&(this.prefY===1||!this.keysCurr[87])){ ySend=-1 }
+  else if(this.keysCurr[87]&&(this.prefY===-1||!this.keysCurr[83])){ ySend=1 }
+  if(this.keysCurr[65]&&(this.prefX===1||!this.keysCurr[68])){ xSend=-1 }
+  else if(this.keysCurr[68]&&(this.prefX===-1||!this.keysCurr[65])){ xSend=1 }
   if(xSend!==0&&ySend!==0){
     xSend=xSend*0.7071
     ySend=ySend*0.7071
@@ -473,6 +485,118 @@ BW.NormF=function(){
 
 //<
 
+//$ WORLD2D
+var World2D=function(x,y){
+  this.tick=0
+  this.grids={}
+  this.x=x
+  this.y=y
+}
+
+World2D.prototype.QuickInit=function(canvas){
+  this.inputManager=BW.InputManager2D()
+  this.canvas=canvas
+  this.engine=new BW.Engine(canvas,true)
+  this.scene=new BW.Scene(this.engine)
+  this.scene.clearColor=new BW.C3(0,0,0)
+  this.scene.ambientColor=new BW.C3(1,1,1)
+  //this.camera=BW.QuickFlyCamera('camera1',this.scene,canvas,new BW.V3(this.x/2,20,this.y/2),new BW.V3(this.x/2,0,this.y/2))
+  this.camera=BW.QuickFlyCamera('camera1',this.scene,canvas,new BW.V3(this.x/2,20,this.y/2),new BW.V3(this.x/2,0,this.y/2))
+  this.light=new BW.HemisphericLight('light1',new BW.V3(0.5,1,0),this.scene)
+  this.Start=function(){this.engine.runRenderLoop(function(){this.scene.render()}.bind(this))}
+  window.addEventListener('resize',this.engine.resize.bind(this.engine))
+  this.Start()
+}
+
+World2D.prototype.AddGround=function(baseMat){
+  var base=BW.QuickPlane(this.scene,new BW.V3(this.x/2,-0.25,this.y/2),new BW.V3(Math.PI/2,0,0),new BW.V3(this.x,this.y,1),baseMat,null,true)
+  base.isPickable=true
+  return base
+}
+
+World2D.prototype.AllThings=function(){
+  var things=[]
+  var keys=Object.keys(this.grids)
+  for(var i=0;i<keys.length;i++){
+    var g=this.grids[keys[i]]
+    things.push()
+    g.All(things)
+  }
+  BW.Shuffle(things)
+  return things
+}
+
+World2D.prototype.AddGrid=function(sGrid){
+  this.grids[sGrid]=new AgentGridSimple()
+}
+
+//(obj,hp,x,y,r,vx,vy,sGrid,mat)
+World2D.prototype.AddThing=function(obj,hp,x,y,r,sGrid,VisAdd,VisMove,vx,vy){
+  this.grids[sGrid].Add(obj,x,y)
+  obj.hp=hp
+  obj.r=r
+  obj.vx=vx===undefined?0:vx
+  obj.vy=vy===undefined?0:vy
+  obj.sGrid=sGrid
+  VisAdd.call(obj,this)
+  obj._VisMove=VisMove
+}
+
+World2D.prototype.Move=function(obj){
+  if(obj.vx||obj.vy){
+    var newX=obj.vx+obj.x
+    var newY=obj.vy+obj.y
+    var allowedX=this.InRadX(newX,obj.r)
+    var allowedY=this.InRadY(newY,obj.r)
+    var allowed=allowedX || allowedY
+    newX=allowedX?newX:obj.x
+    newY=allowedY?newY:obj.y
+    if(allowed){
+      this.grids[obj.sGrid].Move(obj,newX,newY)
+    }
+  obj._VisMove(this,allowed)
+  }
+}
+
+World2D.prototype.KillThings=function(things){
+  for(var t in things){
+    if(t.hp!==undefined&&t.hp<=0){
+      this.grids[t.sGrid].Rem(t)
+      if(t._DeathFun){t._DeathFun(this)}
+    }
+  }
+}
+
+World2D.prototype.In=function(x,y){
+  return x>0 && y>0 && x<this.x && y<this.y
+}
+World2D.prototype.InRad=function(x,y,r){
+  return x-r>0 && y-r>0 && x+r<this.x && y+r<this.y
+}
+World2D.prototype.InRadX=function(x,r){
+  return x-r>0 && x+r<this.x
+}
+World2D.prototype.InRadY=function(y,r){
+  return y-r>0 && y+r<this.y
+}
+
+World2D.prototype.SendMoves=function(){
+  //left 0 right 2
+  var ret={tag:'actions'}
+    var picked=this.scene.pick(this.inputManager.mouseX,this.inputManager.mouseY)
+    if(picked.hit){
+      ret.xPick=picked.pickedPoint.x
+      ret.yPick=picked.pickedPoint.z
+      ret.buttons=this.inputManager.mouseTick
+  }
+  var direction=this.inputManager.GetMoveDir()
+  ret.x=direction.x
+  ret.y=direction.y
+  ret.keys=this.inputManager.keysTick;
+  this.inputManager.resetTick()
+  this.peer.TakeMove(ret)
+}
+//<
 
 //FROM OUTSIDE
 
@@ -897,3 +1021,4 @@ BW.Heap.prototype = {
 //
 //
 //<
+
