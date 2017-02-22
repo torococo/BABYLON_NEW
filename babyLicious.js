@@ -5,22 +5,26 @@ var Unit=function(r,g,b,type){
   this.type=type
 }
 
-Unit.prototype.AddCylinder=function(world){
+Unit.prototype._World2DVisAdd=function(world){
   this.mat=new BW.QuickColorMat(world.scene,this.color.diffuse,this.color.specular,undefined,this.color.emissive)
   this.mesh=BW.QuickCylinder(world.scene,new BW.V3(this.x,0,this.y),undefined,this.r,1,10,this.mat)
   this.mesh.isPickable=false
 }
 
-Unit.prototype.MoveMesh=function(world,bAllowed){
+Unit.prototype._World2DVisMove=function(world,bAllowed){
   if(bAllowed){
     this.mesh.position.x=this.x
     this.mesh.position.z=this.y
   }
   else{
-    if(this.type==='proj'){
+    if(this.type==='proj'||this.type==='hproj'){
         this.hp=0
       }
   }
+}
+
+Unit.prototype._World2DVisRem=function(world){
+  this.mesh.dispose()
 }
 
 Unit.prototype.Shoot=function(world,xShoot,yShoot,vel){
@@ -29,31 +33,32 @@ Unit.prototype.Shoot=function(world,xShoot,yShoot,vel){
   var norm=BW.NormF(xShoot,yShoot)
   xShoot*=norm*vel
   yShoot*=norm*vel
-  world.AddThing(new Unit(0,0,1,'hproj'),1,this.x,this.y,0.1,'hprojs',Unit.prototype.AddCylinder,Unit.prototype.MoveMesh,xShoot,yShoot)
+  world.AddThing(new Unit(0,0,1,'hproj'),1,this.x,this.y,0.1,'hprojs',xShoot,yShoot)
 
 }
 
-//$WORLD
-//
 var World=function(){
   var ret=new World2D(10,10)
 
   ret.Step=function(moves){
     var move=moves[0]
     var ts=this.AllThings()
-    if(move&&(move.x!==0||move.y!==0)){
       for(var it in ts){
         var t=ts[it]
         if(t.sGrid==='heroes'){
-          t.vx=move.x*0.1
-          t.vy=move.y*0.1
-          if(move.xPick&&move.buttons[0]){
-            t.Shoot(this,move.xPick,move.yPick,1)
+        t.vx=0
+        t.vy=0
+          if(move&&(move.x!==0||move.y!==0)){
+            t.vx=move.x*0.1
+            t.vy=move.y*0.1
           }
+          if(move&&move.xPick&&move.buttons[0]){
+            t.Shoot(this,move.xPick,move.yPick,1)
         }
-        this.Move(t)
       }
+      this.Move(t)
     }
+    this.KillThings(ts)
     this.SendMoves()
   }
   
@@ -82,4 +87,3 @@ window.addEventListener('DOMContentLoaded',function(){
   w.peer=new LSPeer(8001,w.Run.bind(w))
 })
 
-//

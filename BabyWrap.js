@@ -531,16 +531,20 @@ World2D.prototype.AddGrid=function(sGrid){
 }
 
 //(obj,hp,x,y,r,vx,vy,sGrid,mat)
-World2D.prototype.AddThing=function(obj,hp,x,y,r,sGrid,VisAdd,VisMove,vx,vy){
+World2D.prototype.AddThing=function(obj,hp,x,y,r,sGrid,vx,vy){
+  if(obj._World2DVisMove===undefined){ throw("please add a _World2DVisMove function to object") }
+  if(obj._World2DVisAdd===undefined){ throw("please add a _World2DVisAdd function to object") }
+  if(obj._World2DVisRem===undefined){ throw("please add a _World2DVisRem function to object") }
   this.grids[sGrid].Add(obj,x,y)
   obj.hp=hp
   obj.r=r
   obj.vx=vx===undefined?0:vx
   obj.vy=vy===undefined?0:vy
   obj.sGrid=sGrid
-  VisAdd.call(obj,this)
-  obj._VisMove=VisMove
+  obj._World2DVisAdd(this)
 }
+
+//World2D.prototype.AddSquare=function()
 
 World2D.prototype.Move=function(obj){
   if(obj.vx||obj.vy){
@@ -554,15 +558,16 @@ World2D.prototype.Move=function(obj){
     if(allowed){
       this.grids[obj.sGrid].Move(obj,newX,newY)
     }
-  obj._VisMove(this,allowed)
+  obj._World2DVisMove(this,allowed)
   }
 }
 
 World2D.prototype.KillThings=function(things){
-  for(var t in things){
+  for(var it in things){
+    var t=things[it]
     if(t.hp!==undefined&&t.hp<=0){
       this.grids[t.sGrid].Rem(t)
-      if(t._DeathFun){t._DeathFun(this)}
+      t._World2DVisRem(this)
     }
   }
 }
