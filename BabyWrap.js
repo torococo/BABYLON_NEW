@@ -250,6 +250,17 @@ BW.GenSprite=function(sName,scene,vPosition,vRotation,vScaling,spriteType,bPicka
 //<
 
 //NOT BABYLON RELATED
+var GridOfGrids=function(gridSize){
+  this.gridSize=gridSize
+  this.grids={}
+  //stores a grid at spatial locations
+  //when a query is made, find all grids that it could be in, and query those grids
+  //if a grid is completely inside a query, return all
+  //when a unit moves outside a grid, transfer it to a new grid
+}
+
+GridOfGrids.prototype.Contains=function(){
+}
 
 //$ AGENT GRID SIMPLE
 var AgentGridSimple=function(){
@@ -272,6 +283,13 @@ AgentGridSimple.prototype.Add=function(obj,x,y){
 
 AgentGridSimple.prototype._ToCoords=function(x,y){
   return Math.floor(x)+","+Math.floor(y)
+}
+
+AgentGridSimple.prototype._IsEmpty=function(){
+  for(var key in this){
+    return true
+  }
+  return false
 }
 
 AgentGridSimple.prototype.Rem=function(obj){
@@ -373,6 +391,9 @@ AgentGridSimple.prototype.All=function(retList){
   for(var i=0;i<keys.length;i++){
     this._GetSquareCoords(retList,keys[i])
   }
+}
+
+AgentGridSimple.prototype.Pop=function(){
 }
 
 AgentGridSimple.prototype.AllShuffle=function(retList){
@@ -558,7 +579,7 @@ World2D.prototype.Move=function(obj){
     if(allowed){
       this.grids[obj.sGrid].Move(obj,newX,newY)
     }
-  obj._World2DVisMove(this,allowed)
+    obj._World2DVisMove(this,allowed)
   }
 }
 
@@ -588,11 +609,11 @@ World2D.prototype.InRadY=function(y,r){
 World2D.prototype.SendMoves=function(){
   //left 0 right 2
   var ret={tag:'actions'}
-    var picked=this.scene.pick(this.inputManager.mouseX,this.inputManager.mouseY)
-    if(picked.hit){
-      ret.xPick=picked.pickedPoint.x
-      ret.yPick=picked.pickedPoint.z
-      ret.buttons=this.inputManager.mouseTick
+  var picked=this.scene.pick(this.inputManager.mouseX,this.inputManager.mouseY)
+  if(picked.hit){
+    ret.xPick=picked.pickedPoint.x
+    ret.yPick=picked.pickedPoint.z
+    ret.buttons=this.inputManager.mouseTick
   }
   var direction=this.inputManager.GetMoveDir()
   ret.x=direction.x
